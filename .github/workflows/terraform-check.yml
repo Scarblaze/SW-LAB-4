@@ -2,38 +2,32 @@ name: Terraform Validation
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [ main ]
   pull_request:
 
 jobs:
   terraform-check:
-    name: Terraform Check
     runs-on: ubuntu-latest
 
-    steps:
+    defaults:
+      run:
+        working-directory: day4   # 👈 IMPORTANT
 
-      # Step 1 — Checkout repository
+    steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2 — Install Terraform
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      # Step 3 — Initialize Terraform
       - name: Terraform Init
         run: terraform init
 
-      # Step 4 — Format Check
       - name: Terraform Format
         run: terraform fmt -check -recursive
 
-      # Step 5 — Validate Configuration
       - name: Terraform Validate
         run: terraform validate
 
-      # Step 6 — Generate Execution Plan
       - name: Terraform Plan
         run: terraform plan -no-color
